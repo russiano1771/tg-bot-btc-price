@@ -1,0 +1,37 @@
+<configuration>
+
+    <property name="HOME_LOG" value="/C:/Users/77051/Desktop/JAVATEST/btc-banker/app-btc-banker"/> <!-- путь до файла где будут храниться логи, ЕСЛИ ФАЙЛА НЕ СУЩЕСТВУЕТ, ОН БУДЕТ СОЗДАН -->
+
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- fileNamePattern путь и название файла который будет заархивирован -->
+            <fileNamePattern>/var/log/proj3ct.io/tg-simple-bot/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <!-- максимальный размер файла с логами, если он превысит 10мб, то старый файл будет архивирован и будет создан новый -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB(в нашем случае 1GB), it will delete old archived file -->
+            <totalSizeCap>1GB</totalSizeCap> <!-- если все архивированные файлы суммарно превысят 1 гб, то наиболее старые будут удаляться   -->
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory> <!-- 60 дней максимум хранятся файлы, а затем удаляются-->
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="io.proj3ct.SpringDemoBot" level="debug" additivity="false">
+        <appender-ref ref="FILE-ROLLING"/><!-- собирает инфу про debug-->
+    </logger>
+
+    <root level="error"> <!-- собирает инфу про ошибки-->
+        <appender-ref ref="FILE-ROLLING"/>
+    </root>
+
+    <root level="info"><!-- собирает инфу про взаимодействие пользователей с программой -->
+        <appender-ref ref="FILE-ROLLING"/>
+    </root>
+
+</configuration>
